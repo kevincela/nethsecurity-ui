@@ -79,11 +79,13 @@ export const useNotificationsStore = defineStore('notifications', () => {
       ? t('error_modal.ubus_request_failed')
       : t('error_modal.api_request_failed')
 
+    const errorDescription = getErrorDescription(axiosError, isUbusCall)
+
     const notification: NeNotification = {
       id: uid(),
       kind: 'error',
       title: notificationTitle,
-      description: getErrorDescription(axiosError, isUbusCall),
+      description: errorDescription.length > 25 ? errorDescription.slice(0, 25) + "..." : errorDescription,
       timestamp: new Date(),
       payload: axiosError,
       primaryLabel: t('notifications.show_details'),
